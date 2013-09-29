@@ -1,0 +1,36 @@
+#!/usr/bin/python
+from django.contrib.auth.models import User
+import time
+import subprocess
+
+class KerberosAuth():
+  def __init__(self):
+    self = self
+
+  def authenticate(self, username, password):
+    if username and password:
+      try:
+        authProc = subprocess.Popen('./auth.pl', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        authProc.stdin.write(username+"\n"+password+"\n")
+        authReturn = authProc.stdout.read()
+      except:
+        return None
+    else:
+      return None
+    if authReturn == "Success":
+      currentUser = UserModel._default_manager.get_by_natural_key(username)
+      if currentUser:
+        return currentUser
+      else:
+        newUser = User(username="foo", password='We Dont Store Passwords Here. Sorry, try a worse website to steal them.')
+        newUser.save()
+        return newUser
+    else:
+      return None
+
+  def get_user(self, user_id):
+    try:
+      UserModel = get_user_model()
+      return User._default_manager.get(pk=user_id)
+    except User.DoesNotExist:
+      return None
