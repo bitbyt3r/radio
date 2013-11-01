@@ -6,22 +6,29 @@ import traceback
 import mpylayer
 #import songDB
 
-server = network.Server(port=4449)
-client = network.Client(port=4448)
+server = network.Server(port=8080)
 
 try:
   mp = mpylayer.MPlayerControl()
+  paused = False
   while True:
     msgs = server.getMessages()
     for i in msgs:
-      if i.type == "play":
-        song = i.contents[0]
-        print song
-        mp.loadfile(song)
-      if i.type == "status":
+      addr = i[1]
+      msg = i[0]
+      if msg.type == "play":
+        song = msg.contents[0]
+        if os.path.exists(song):
+          mp.loadfile(song)
+        if paused:
+          paused = False
+          mp.pause()
+      if msg.type == "status":
+        client = network.Client(host=addr[0], port=8081)
         client.sendMessage(network.Message(type="statusResponse", contents=(mp.percent_pos,)))
-      if i.type == "pause":
+      if msg.type == "pause":
         mp.pause()
+        paused = not(paused)
 except:
   server.stop()
   print traceback.format_exc()

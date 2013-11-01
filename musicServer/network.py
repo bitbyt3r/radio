@@ -26,7 +26,7 @@ class Server:
         data = pickle.load(f)
         f.close() 
         conn.close()
-        return data
+        return (data, addr)
       except socket.timeout:
         return None
 

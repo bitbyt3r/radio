@@ -1,11 +1,12 @@
 #!/usr/bin/python
 import network
+import readline
 import sys
 import traceback
 import threading
 
-server = network.Server(port=4448)
-client = network.Client(port=4449)
+server = network.Server(port=8081)
+client = network.Client(port=8080)
 
 class Printer(threading.Thread):
   def __init__(self, server):
@@ -15,8 +16,10 @@ class Printer(threading.Thread):
   def run(self):
     while self.running:
       for i in self.server.getMessages():
-        if i.type == "statusResponse":
-          sys.stdout.write("\r%s%%\n>" % i.contents[0])
+        msg = i[0]
+        addr = i[1]
+        if msg.type == "statusResponse":
+          sys.stdout.write("\r%s%%\n>" % msg.contents[0])
         sys.stdout.flush()
   def stop(self):
     self.running = False
