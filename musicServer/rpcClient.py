@@ -2,7 +2,7 @@
 import xmlrpclib
 import readline
 
-s = xmlrpclib.ServerProxy('http://localhost:8000', allow_none=True)
+s = xmlrpclib.ServerProxy('http://forge.cs.umbc.edu:8000', allow_none=True)
 commands = {"play":s.play, "status":s.status, "pause":s.pause}
 while True:
   command = raw_input(">")

@@ -1,0 +1,22 @@
+=head2 Fri Oct 18 17:38:11 2013: C<Module> L<Authen::Krb5::Simple|Authen::Krb5::Simple>
+
+=over 4
+
+=item *
+
+C<installed into: /afs/umbc.edu/public/web/domains/wmbc.umbc.edu/dev/htdocs/backend/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.43>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

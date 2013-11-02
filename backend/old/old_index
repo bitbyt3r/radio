@@ -1,0 +1,20 @@
+#!/afs/umbc.edu/public/web/sites/wmbc/dev/htdocs/backend/venv/bin/python
+import cgitb
+import cgi
+cgitb.enable()
+import xmlrpclib
+
+form = cgi.FieldStorage()
+print "Content-Type: text/html\n\n"
+s = xmlrpclib.ServerProxy('http://forge.cs.umbc.edu:8000', allow_none=True)
+print """<form method="post"><input type=text name="action"><input type=submit></form>"""
+commands = {"play":s.play, "status":s.status, "pause":s.pause}
+if "action" in form:
+  command = form["action"].value.split(" ")
+  if command[0] in commands:
+    if len(command) > 1:
+      print commands[command[0]](*command[1:])
+    else:
+      print commands[command[0]]()
+  else:
+    print "invalid command"
